@@ -1,12 +1,12 @@
-import { ChevronDownIcon } from '@heroicons/react/outline'
-import { useSession } from 'next-auth/react'
-import { useEffect, useState } from 'react'
-import { shuffle } from 'lodash'
-import { useRecoilState, useRecoilValue } from 'recoil'
-import { playlistIdState, playlistState } from '../atoms/playlistyAtom'
-import useSpotify from '../hooks/useSpotify'
-import Songs from './Songs'
-import { signOut } from 'next-auth/react'
+import { ChevronDownIcon } from '@heroicons/react/outline';
+import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
+import { shuffle } from 'lodash';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { playlistIdState, playlistState } from '../atoms/playlistAtom';
+import useSpotify from '../hooks/useSpotify';
+import Songs from './Songs';
+import { signOut } from 'next-auth/react';
 
 const colors = [
   'from-indigo-500',
@@ -16,29 +16,29 @@ const colors = [
   'from-yellow-500',
   'from-pink-500',
   'from-purple-500',
-]
+];
 
 function Center() {
-  const { data: session } = useSession()
-  const [color, setColor] = useState(null)
-  const playlistId = useRecoilValue(playlistIdState)
-  const [playlist, setPlaylist] = useRecoilState(playlistState)
-  const spotifyApi = useSpotify()
+  const { data: session } = useSession();
+  const [color, setColor] = useState(null);
+  const playlistId = useRecoilValue(playlistIdState);
+  const [playlist, setPlaylist] = useRecoilState(playlistState);
+  const spotifyApi = useSpotify();
 
   useEffect(() => {
-    setColor(shuffle(colors).pop())
-  }, [playlistId])
+    setColor(shuffle(colors).pop());
+  }, [playlistId]);
 
   useEffect(() => {
     spotifyApi
       .getPlaylist(playlistId)
       .then((data) => {
-        setPlaylist(data.body)
+        setPlaylist(data.body);
       })
       .catch(() => {
-        console.log('Something went wrong')
-      })
-  }, [spotifyApi, playlistId])
+        console.log('Something went wrong');
+      });
+  }, [spotifyApi, playlistId]);
 
   return (
     <div className="h-screen flex-grow overflow-y-scroll scrollbar-hide">
@@ -75,7 +75,7 @@ function Center() {
         <Songs />
       </div>
     </div>
-  )
+  );
 }
 
-export default Center
+export default Center;

@@ -4,27 +4,27 @@ import {
   LibraryIcon,
   RssIcon,
   PlusCircleIcon,
-} from '@heroicons/react/outline'
-import { HeartIcon } from '@heroicons/react/solid'
-import { useEffect, useState } from 'react'
-import { useSession } from 'next-auth/react'
-import useSpotify from '../hooks/useSpotify'
-import { useRecoilState } from 'recoil'
-import { playlistIdState } from '../atoms/playlistyAtom'
+} from '@heroicons/react/outline';
+import { HeartIcon } from '@heroicons/react/solid';
+import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import useSpotify from '../hooks/useSpotify';
+import { useRecoilState } from 'recoil';
+import { playlistIdState } from '../atoms/playlistAtom';
 
 function Sidebar() {
-  const spotifyApi = useSpotify()
-  const { data: session } = useSession()
-  const [playlist, setPlaylist] = useState([])
-  const [_, setPlaylistId] = useRecoilState(playlistIdState)
+  const spotifyApi = useSpotify();
+  const { data: session } = useSession();
+  const [playlist, setPlaylist] = useState([]);
+  const [_, setPlaylistId] = useRecoilState(playlistIdState);
 
   useEffect(() => {
     if (spotifyApi.getAccessToken()) {
       spotifyApi.getUserPlaylists().then((data) => {
-        setPlaylist(data.body.items)
-      })
+        setPlaylist(data.body.items);
+      });
     }
-  }, [session, spotifyApi])
+  }, [session, spotifyApi]);
 
   return (
     <div className="hidden h-screen overflow-y-scroll border-r border-gray-900 p-5 pb-36 text-xs text-gray-500 scrollbar-hide sm:max-w-[12rem] md:inline-flex lg:max-w-[15rem] lg:text-sm">
@@ -76,7 +76,7 @@ function Sidebar() {
         ))}
       </div>
     </div>
-  )
+  );
 }
 
-export default Sidebar
+export default Sidebar;

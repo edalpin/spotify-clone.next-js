@@ -1,21 +1,21 @@
-import { useRecoilState } from 'recoil'
-import { currentTrackIdState, isPlayingState } from '../atoms/songAtom'
-import useSpotify from '../hooks/useSpotify'
-import { millisecondsToMinutesAndSeconds } from '../lib/time'
+import { useRecoilState } from 'recoil';
+import { currentTrackIdState, isPlayingState } from '../atoms/songAtom';
+import useSpotify from '../hooks/useSpotify';
+import { millisecondsToMinutesAndSeconds } from '../lib/time';
 
 function Song({ order, track }) {
-  const spotifyApi = useSpotify()
+  const spotifyApi = useSpotify();
   const [currentTrackId, setCurrentTrackId] =
-    useRecoilState(currentTrackIdState)
-  const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState)
+    useRecoilState(currentTrackIdState);
+  const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
 
   const playSong = () => {
-    setCurrentTrackId(track.track.id)
-    setIsPlaying(true)
+    setCurrentTrackId(track.track.id);
+    setIsPlaying(true);
     spotifyApi.play({
       uris: [track.track.uri],
-    })
-  }
+    });
+  };
 
   return (
     <div
@@ -35,7 +35,7 @@ function Song({ order, track }) {
         <p>{millisecondsToMinutesAndSeconds(track.track.duration_ms)}</p>
       </div>
     </div>
-  )
+  );
 }
 
-export default Song
+export default Song;

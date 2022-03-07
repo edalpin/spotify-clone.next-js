@@ -1,10 +1,10 @@
-import { useSession } from 'next-auth/react'
-import { useCallback, useEffect, useState } from 'react'
-import { useRecoilState } from 'recoil'
-import { currentTrackIdState, isPlayingState } from '../atoms/songAtom'
-import useSpotify from '../hooks/useSpotify'
-import useSongInfo from '../hooks/useSongInfo'
-import { VolumeUpIcon as VolumeDownIcon } from '@heroicons/react/outline'
+import { useSession } from 'next-auth/react';
+import { useCallback, useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { currentTrackIdState, isPlayingState } from '../atoms/songAtom';
+import useSpotify from '../hooks/useSpotify';
+import useSongInfo from '../hooks/useSongInfo';
+import { VolumeUpIcon as VolumeDownIcon } from '@heroicons/react/outline';
 import {
   RewindIcon,
   ReplyIcon,
@@ -13,60 +13,60 @@ import {
   SwitchHorizontalIcon,
   FastForwardIcon,
   VolumeUpIcon,
-} from '@heroicons/react/solid'
-import { debounce } from 'lodash'
+} from '@heroicons/react/solid';
+import { debounce } from 'lodash';
 
 function Player() {
-  const spotifyApi = useSpotify()
-  const { data: session } = useSession()
-  const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState)
+  const spotifyApi = useSpotify();
+  const { data: session } = useSession();
+  const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
   const [currentTrackId, setCurrentTrackId] =
-    useRecoilState(currentTrackIdState)
-  const [volume, setVolume] = useState(50)
-  const songInfo = useSongInfo()
+    useRecoilState(currentTrackIdState);
+  const [volume, setVolume] = useState(50);
+  const songInfo = useSongInfo();
 
   const fetchCurrentSong = () => {
     if (!songInfo) {
       spotifyApi.getMyCurrentPlayingTrack().then((data) => {
-        setCurrentTrackId(data.body?.item?.id)
+        setCurrentTrackId(data.body?.item?.id);
 
         spotifyApi.getMyCurrentPlaybackState().then((data) => {
-          setIsPlaying(data.body?.is_playing)
-        })
-      })
+          setIsPlaying(data.body?.is_playing);
+        });
+      });
     }
-  }
+  };
   const handlePlayPause = () => {
     spotifyApi.getMyCurrentPlaybackState().then((data) => {
       if (data?.body?.is_playing) {
-        spotifyApi.pause()
-        setIsPlaying(false)
+        spotifyApi.pause();
+        setIsPlaying(false);
       } else {
-        spotifyApi.play()
-        setIsPlaying(true)
+        spotifyApi.play();
+        setIsPlaying(true);
       }
-    })
-  }
+    });
+  };
 
   const debounceAdjustVolume = useCallback(
     debounce((volume) => {
-      spotifyApi.setVolume(volume).catch(() => {})
+      spotifyApi.setVolume(volume).catch(() => {});
     }, 500),
     []
-  )
+  );
 
   useEffect(() => {
     if (spotifyApi.getAccessToken() && !currentTrackId) {
-      fetchCurrentSong()
-      setVolume(50)
+      fetchCurrentSong();
+      setVolume(50);
     }
-  }, [currentTrackId, spotifyApi, session])
+  }, [currentTrackId, spotifyApi, session]);
 
   useEffect(() => {
     if (volume >= 0 && volume <= 100) {
-      debounceAdjustVolume(volume)
+      debounceAdjustVolume(volume);
     }
-  }, [volume])
+  }, [volume]);
 
   return (
     <div
@@ -118,7 +118,7 @@ function Player() {
         />
       </div>
     </div>
-  )
+  );
 }
 
-export default Player
+export default Player;

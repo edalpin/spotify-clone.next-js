@@ -1,5 +1,5 @@
-import React from 'react'
-import { getProviders, signIn } from 'next-auth/react'
+import React from 'react';
+import { getProviders, signIn } from 'next-auth/react';
 
 function Login({ providers }) {
   return (
@@ -17,16 +17,16 @@ function Login({ providers }) {
         </div>
       ))}
     </div>
-  )
+  );
 }
 
-export default Login
+export default Login;
 
 export async function getServerSideProps() {
-  const providers = await getProviders()
+  const providers = await getProviders();
   return {
     props: {
       providers,
     },
-  }
+  };
 }
